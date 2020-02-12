@@ -12,8 +12,7 @@ int main() {
 		fgets(buf, 64, stdin);
 		if (strncmp(buf, "exit", 64) == 0) {
 			return 0;
-		} else if (num = strtol(buf, NULL, 10) && errno != ERANGE) {
-			num = strtol(buf, NULL, 10); // Why do I need this?
+		} else if ((num = strtol(buf, NULL, 10)) && errno != ERANGE) {
 			printf("Fibonacci number %d is %d.\n", num, fib(num));
 		} else {
 			fprintf(stderr, "An error occurred.");
