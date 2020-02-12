@@ -16,4 +16,4 @@ O3-ffast-math:
 	gcc -o fib-O3-ffast-math -O3 -ffast-math src/fib.c
 
 clean:
-	rm fib-*
+	rm fib-O*
