@@ -13,3 +13,6 @@ speeds up a further 4x.
 ```
 as well as some duplicates we didn't eliminate, and non-primitive solutions
 (solutions where all numbers share a common factor).
+
+### References
+Could compare against https://rosettacode.org/wiki/Pythagorean_triples#C
