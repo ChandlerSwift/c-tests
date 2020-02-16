@@ -3,7 +3,7 @@
 
 int main() {
     unsigned long long f = 1;
-    while (1) {
+    for (int f = 1; f < 65536; f++) { // 65536**4-1 is the max we can guarantee no overflow. 
         if (f > 640)
             break;
         if (f % 20 == 0) {
@@ -27,6 +27,6 @@ int main() {
                 }
             }
         }
-        f += 1;
     }
+    printf("Exhausted unsigned long long. Find a better compiler.\n");
 }
