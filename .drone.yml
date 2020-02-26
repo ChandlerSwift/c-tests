@@ -7,7 +7,7 @@ steps:
     image: gcc
     commands:
       - for dir in fib fibio quartic rot13; do cd $dir; make; cd ..; done
-      - cp rot13/rot13 rot13
+      - cp rot13/rot13 .
   - name: release_upload
     image: plugins/gitea-release
     settings:
