@@ -13,10 +13,6 @@ steps:
       api_key:
         from_secret: gitea_token
       base_url: https://edenprairie.chandlerswift.com/git
-      files:
-        - fib/fib*
-        - fibio/fibio
-        - quartic/finder
-        - rot13/rot13
+      files: rot13/rot13
     when:
       event: tag
