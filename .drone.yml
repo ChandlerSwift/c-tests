@@ -18,3 +18,5 @@ steps:
         - fibio/fibio
         - quartic/finder
         - rot13/rot13
+    when:
+      event: tag
