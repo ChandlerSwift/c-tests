@@ -7,13 +7,13 @@ steps:
     image: gcc
     commands:
       - for dir in fib fibio quartic rot13; do cd $dir; make; cd ..; done
-      - cp rot13/rot13 .
+      - cp rot13/rot13 ./rot13b
   - name: release_upload
     image: plugins/gitea-release
     settings:
       api_key:
         from_secret: gitea_token
       base_url: https://edenprairie.chandlerswift.com/git
-      files: rot13
+      files: rot13b
     when:
       event: tag
