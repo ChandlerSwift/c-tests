@@ -14,6 +14,6 @@ steps:
       api_key:
         from_secret: gitea_token
       base_url: https://edenprairie.chandlerswift.com/git
-      files: rot13b
+      files: README.md
     when:
       event: tag
