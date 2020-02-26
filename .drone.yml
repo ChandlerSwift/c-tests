@@ -14,7 +14,6 @@ steps:
         from_secret: gitea_token
       base_url: https://edenprairie.chandlerswift.com/git
       files:
-        - fib/fib*
         - fibio/fibio
         - quartic/finder
         - rot13/rot13
