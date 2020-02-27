@@ -13,11 +13,6 @@ top:
 	cmp $0, %eax
 	je exit
 
-	# if (buffer == 0) exit;
-	mov $buffer, %eax
-	cmp $0, %eax
-	je exit
-
 	# if (buffer == 4) exit; # ^D/eof
 	cmp $4, %eax
 	je exit
