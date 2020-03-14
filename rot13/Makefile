@@ -1,3 +1,4 @@
+.PHONY: rot13
 rot13:
 	gcc -o rot13 rot13.c
 
