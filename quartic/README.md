@@ -16,3 +16,6 @@ as well as some duplicates we didn't eliminate, and non-primitive solutions
 
 ### References
 Could compare against https://rosettacode.org/wiki/Pythagorean_triples#C
+
+For a more complete list, as well as explanations and more helpful references,
+see http://mathworld.wolfram.com/DiophantineEquation4thPowers.html
