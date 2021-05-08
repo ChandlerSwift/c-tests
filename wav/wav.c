@@ -9,6 +9,27 @@
 #include <stdio.h>
 #include <stdint.h> // int16_t, etc.
 #include <stdlib.h>
+#include <stdbool.h>
+#include <math.h> // pow(), sin(), etc.
+
+double midi_to_freq(int midi_code) {
+	// 69 == A_4 == 440Hz
+	return 440 * pow(2.0, (midi_code-69)/12.0);
+}
+
+// repeated calls construct a wave
+int16_t get_value_at(double time, double frequency) {
+	//return ((int16_t)(time * frequency * 2) % 2) * 8192; // square
+	// return (int16_t) (sin(time * 2 * M_PI * frequency) * 8192); // sine
+	// return fmod(time * frequency, 1) * 8192; // sawtooth
+	// return (1 - fmod(time * frequency, 1)) * 8192; // reverse sawtooth
+	return (12 * sin(time * 2 * M_PI * frequency)
+		+ 12 * sin(time * 2 * M_PI * frequency * 2)
+		+ 12 * sin(time * 2 * M_PI * frequency * 4)
+		+ 1 * sin(time * 2 * M_PI * frequency * 7)
+		+ 1 * sin(time * 2 * M_PI * frequency * 9)
+		+ 1 * sin(time * 2 * M_PI * frequency * 11)) * 8192 / 10;
+}
 
 int main(int argc, char** argv) {
 	if (argc != 2) {
@@ -21,27 +42,34 @@ int main(int argc, char** argv) {
 
 	FILE *fp = fopen(filename, "w+"); // TODO: is this the mode I want? How exactly does it differ from `w`?
 
+	int notes[] = {
+		64, 62, 60, 62,  64, 64, 64, -1, // Ma-ry had a lit-tle lamb
+		62, 62, 62, -1,  64, 67, 67, -1, // lit-tle lamb, lit-tle lamb
+		64, 62, 60, 62,  64, 64, 64, 64, // Ma-ry had a lit-tle lamb whose
+		62, 62, 64, 62,  60              // fleece was white as snow
+		};
+	int note_count = 29;
+	float note_duration = 0.4; // seconds
+	float time_between_notes = 0.1; // seconds
+
 	// Generate the sound
 	unsigned int const num_channels = 1;
 	unsigned int const sample_rate = 44100;
-	unsigned int const length = 2; // seconds
+	float length = note_count * (note_duration + time_between_notes); // seconds
 	unsigned int const num_samples = sample_rate * length;
 	unsigned int const bits_per_sample = 16;
 	int16_t *samples = malloc(sizeof(int16_t) * num_samples);
 
-	int high = 0; // a bool, really.
-	int since_last_switched = 0;
-	int wavelength = 2;
 	for (unsigned int i = 0; i < num_samples; i++) {
-		if (since_last_switched >= wavelength) {
-			since_last_switched = 0;
-			high = !high;
+		double time = i / (double) sample_rate;
+		int active_note_index = time / (note_duration + time_between_notes);
+		bool done_with_note = time - active_note_index * (note_duration + time_between_notes) > note_duration;
+		bool active = !done_with_note && (notes[active_note_index] >= 0);
+		if (active) {
+			samples[i] = get_value_at(time, midi_to_freq(notes[active_note_index]));
+		} else {
+			samples[i] = 0;
 		}
-		if (i % 500 == 0) { // Do something to make it interesting
-			wavelength++;
-		}
-		samples[i] = high ? 16384 : -16384;
-		since_last_switched++;
 	}
 
 	// Offset  Size  Name             Description
